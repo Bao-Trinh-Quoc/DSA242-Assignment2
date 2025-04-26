@@ -4,6 +4,7 @@
 #include "heap/IHeap.h"
 #include <sstream>
 #include <iostream>
+#include "list/XArrayList.h"
 using namespace std;
 /*
  * function pointer: int (*comparator)(T& lhs, T& rhs)
@@ -85,7 +86,7 @@ private:
         else{
             if (a < b) return -1;
             else if(a > b) return 1;
-            else retu21rn 0;
+            else return 0;
         }
     }
     
@@ -98,7 +99,25 @@ private:
     void removeInternalData();
     void copyFrom(const Heap<T>& heap);
 
-    void heapsort(XArrayList<T>& arrayList);
+    void heapsort(XArrayList<T>& arrayList) {
+        // Clear the current heap if it has any data
+        clear();
+        
+        // Step 1: Build a heap with all elements from arrayList
+        // Note: push() already contains reheapUp operation
+        for (int i = 0; i < arrayList.size(); i++) {
+            push(arrayList.get(i));
+            // Print the state of the heap after each completed heap-up
+            cout << "After inserting " << arrayList.get(i) << ": " << toString() << endl;
+        }
+        
+        // Step 2: Extract all elements from the heap (sorted order)
+        int originalSize = arrayList.size();
+        for (int i = 0; i < originalSize; i++) {
+            // Extract the minimum (or maximum) element from the heap
+            arrayList.set(i, pop());
+        }
+    }
     
 //////////////////////////////////////////////////////////////////////
 ////////////////////////  INNER CLASSES DEFNITION ////////////////////
@@ -156,9 +175,9 @@ template<class T>
 Heap<T>::Heap(
         int (*comparator)(T&, T&), 
         void (*deleteUserData)(Heap<T>* ) ){
-    capacity = 10;
-    count = 0;
-    elements = new T[capacity];
+    this->capacity = 10;
+    this->count = 0;
+    this->elements = new T[capacity];
     this->comparator = comparator;
     this->deleteUserData = deleteUserData;
 }
@@ -169,8 +188,11 @@ Heap<T>::Heap(const Heap<T>& heap){
 
 template<class T>
 Heap<T>& Heap<T>::operator=(const Heap<T>& heap){
-    removeInternalData();
-    copyFrom(heap);
+    if (this != &heap) {
+        removeInternalData();
+        copyFrom(heap);
+     }
+  
     return *this;
 }
 
@@ -182,10 +204,16 @@ Heap<T>::~Heap(){
 
 template<class T>
 void Heap<T>::push(T item){ //item  = 25
-    ensureCapacity(count + 1); //[18, 15, 13, 25 , , ]
+    // ensureCapacity(count + 1); //[18, 15, 13, 25 , , ]
+    // elements[count] = item;
+    // count += 1; //count = 
+    // reheapUp(count - 1); // [18, 15, 13, 25 , , ]
+
+    // My code
+    ensureCapacity(count + 1);  // ensure enough space
     elements[count] = item;
-    count += 1; //count = 
-    reheapUp(count - 1); // [18, 15, 13, 25 , , ]
+    reheapUp(count);  // reheap up
+    this->count++;
 }
 /*
       18
@@ -208,10 +236,10 @@ T Heap<T>::pop(){
     if(count == 0) 
         throw std::underflow_error("Calling to peek with the empty heap.");
     
-    T item = elements[0]; //item =25
-    elements[0] = elements[count - 1]; //[15, 18, 13, , , ]
-    count -= 1;
-    reheapDown(0);
+    T item = this->elements[0];
+    this->elements[0] = this->elements[this->count - 1]; // last element to root
+    this->count--;
+    reheapDown(0);  // reheapify the root
     return item;
 }
 
@@ -230,22 +258,37 @@ template<class T>
 const T Heap<T>::peek(){
     if(count == 0) 
         throw std::underflow_error("Calling to peek with the empty heap.");
-    return elements[0];
+    return this->elements[0];
 }
 
 
 template<class T>
 void Heap<T>::remove(T item, void (*removeItemData)(T)){
-    int foundIdx = this->getItem(item);
+    // int foundIdx = this->getItem(item);
     
-    //CASE 1: not found
-    if(foundIdx == -1) return;
+    // //CASE 1: not found
+    // if(foundIdx == -1) return;
 
-    //CASE 2: found at foundIdx
-    elements[foundIdx] = elements[count - 1]; 
-    count -= 1;
-    reheapDown(foundIdx);
-    if(removeItemData != NULL) removeItemData(item); //free item's memory
+    // //CASE 2: found at foundIdx
+    // elements[foundIdx] = elements[count - 1]; 
+    // count -= 1;
+    // reheapDown(foundIdx);
+    // if(removeItemData != NULL) removeItemData(item); //free item's memory
+    
+    // My code
+    int pos = getItem(item);
+    if (pos == -1) {
+       return; // item not found
+    }
+ 
+    if (removeItemData != nullptr) {
+       removeItemData(this->elements[pos]);  // remove user's data if needed
+    }
+ 
+    // move last element to the position of the item to be removed
+    this->elements[pos] = this->elements[this->count - 1];
+    this->count--;
+    reheapDown(pos);
 }
 
 /*
@@ -286,38 +329,40 @@ void Heap<T>::remove_bck(T item, void (*removeItemData)(T)){
 
 template<class T>
 bool Heap<T>::contains(T item){
-    bool found = false;
-    for(int idx=0; idx < count; idx++){
-        if(compare(elements[idx], item) == 0){
-            found = true;
-            break;
-        }
-    }
-    return found;
+    // bool found = false;
+    // for(int idx=0; idx < count; idx++){
+    //     if(compare(elements[idx], item) == 0){
+    //         found = true;
+    //         break;
+    //     }
+    // }
+    // return found;
+    return getItem(item) != -1;
 }
 
 template<class T>
 int Heap<T>::size(){
-    return count;
+    return this->count;
 }
 
 template<class T>
 void Heap<T>::heapify(T array[], int size){
-    for(int idx=0; idx < size; idx++) push(array[idx]);
+    for(int idx=0; idx < size; idx++) 
+        push(array[idx]);
 }
 
 template<class T>
 void Heap<T>::clear(){
     removeInternalData();
     
-    capacity = 10;
-    count = 0;
-    elements = new T[capacity];
+    this->capacity = 10;
+    this->count = 0;
+    this->elements = new T[capacity];
 }
 
 template<class T>
 bool Heap<T>::empty(){
-    return count == 0;
+    return this->count == 0;
 }
 
 template<class T>
@@ -373,31 +418,59 @@ void Heap<T>::swap(int a, int b){
 
 template<class T>
 void Heap<T>::reheapUp(int position){
-    if(position <= 0) return;
-    int parent = (position-1)/2;
-    if(aLTb(this->elements[position], this->elements[parent])){
-        this->swap(position, parent);
-        reheapUp(parent);
+    // if(position <= 0) return;
+    // int parent = (position-1)/2;
+    // if(aLTb(this->elements[position], this->elements[parent])){
+    //     this->swap(position, parent);
+    //     reheapUp(parent);
+    // }
+
+    // My code
+    int parent = (position - 1) / 2;
+    while (position > 0 && aLTb(elements[position], elements[parent])) {
+       swap(position, parent);
+       position = parent;
+       parent = (position - 1) / 2;
     }
 }
 
 template<class T>
 void Heap<T>::reheapDown(int position){
-    int leftChild = position*2 + 1;
-    int rightChild = position*2 + 2;
-    int lastPosition = this->count - 1;
+    // int leftChild = position*2 + 1;
+    // int rightChild = position*2 + 2;
+    // int lastPosition = this->count - 1;
 
-    if(leftChild <= lastPosition){
-        int smallChild = leftChild; //by default => leftChild valid but rightChild invalid
-        if(rightChild <= lastPosition){
-            if(aLTb(this->elements[leftChild], this->elements[rightChild])) 
-                smallChild = leftChild;
-            else smallChild = rightChild;
+    // if(leftChild <= lastPosition){
+    //     int smallChild = leftChild; //by default => leftChild valid but rightChild invalid
+    //     if(rightChild <= lastPosition){
+    //         if(aLTb(this->elements[leftChild], this->elements[rightChild])) 
+    //             smallChild = leftChild;
+    //         else smallChild = rightChild;
+    //     }
+
+    //     if(aLTb(this->elements[smallChild], this->elements[position])){
+    //         this->swap(smallChild, position);
+    //         reheapDown(smallChild);
+    //     }
+    // }
+
+    // My code
+    int left = position * 2 + 1;  // left child
+    int right = position * 2 + 2; // right child
+    int smaller = left;
+    while (left < count) {
+        if (right < count && aLTb(elements[right], elements[left])) {
+            smaller = right;
         }
-
-        if(aLTb(this->elements[smallChild], this->elements[position])){
-            this->swap(smallChild, position);
-            reheapDown(smallChild);
+        if (aLTb(elements[smaller], elements[position])) {
+            swap(position, smaller);
+            position = smaller;
+            left = 2 * position + 1;
+            right = 2 * position + 2;
+            smaller = left;
+        }
+        else {
+            break;
         }
     }
 }

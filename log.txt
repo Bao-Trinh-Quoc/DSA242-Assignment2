@@ -1,0 +1,24 @@
+24/04/2025
+Ke hoach hien tai la sau khi to lam xong not cai phan heap to se integrate thu luon.
+xong xuoi thi se den phan cuoi.
+
+26/04/2025
+
+bat dau ghep dan dan nha ;).
+
+hmm mot so doan code to thay thay viet ok hon minh chu khong phai luia dao gi lam
+
+tam thoi cu de cai code ban dau o Heap.h tai copyFrom
+
+
+ok to vua lam ao thuat :)))
+template <typename T>
+struct is_specialization_of_pair : std::false_type {};
+
+template <typename T1, typename T2>
+struct is_specialization_of_pair<std::pair<T1, T2>> : std::true_type {};
+
+ok so this is pretty bs
+but i add inline to every function in Inventory
+
+Add inline vao mot dong function :)).
