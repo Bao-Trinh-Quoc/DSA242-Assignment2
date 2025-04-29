@@ -38,3 +38,4 @@ completed Hash --- passed 100 tcs
 
 
 update heapify in Heap. clear heap before push
+update heapSort in Heap.
