@@ -34,3 +34,7 @@ cha van de o Hash cung kha nhieu nhieu :))). sua tu tu duoc.vua sua vua lam bai 
 
 
 update copyMapFrom
+completed Hash --- passed 100 tcs
+
+
+update heapify in Heap. clear heap before push

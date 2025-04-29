@@ -233,7 +233,7 @@ void Heap<T>::push(T item){ //item  = 25
  */
 template<class T>
 T Heap<T>::pop(){
-    if(count == 0) 
+    if (this->count == 0) 
         throw std::underflow_error("Calling to peek with the empty heap.");
     
     T item = this->elements[0];
@@ -347,6 +347,8 @@ int Heap<T>::size(){
 
 template<class T>
 void Heap<T>::heapify(T array[], int size){
+    clear();
+
     for(int idx=0; idx < size; idx++) 
         push(array[idx]);
 }
