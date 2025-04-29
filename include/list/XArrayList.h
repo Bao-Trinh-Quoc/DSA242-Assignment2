@@ -11,11 +11,11 @@
  #include <type_traits>
  using namespace std;
  
- template <typename T>
- struct is_specialization_of_pair : std::false_type {};
+//  template <typename T>
+//  struct is_specialization_of_pair : std::false_type {};
  
- template <typename T1, typename T2>
- struct is_specialization_of_pair<std::pair<T1, T2>> : std::true_type {};
+//  template <typename T1, typename T2>
+//  struct is_specialization_of_pair<std::pair<T1, T2>> : std::true_type {};
 
  template <class T>
  class XArrayList : public IList<T>
@@ -420,17 +420,17 @@
          else
          {
             // Old version 
-            // ss << this->data[i];
+            ss << this->data[i];
             // Check if T is a std::pair
-            if constexpr(is_specialization_of_pair<T>::value)
-            {
-                ss << "(" << this->data[i].first << "," << this->data[i].second << ")";
-            }
-            else
-            {
-                // Default for non-pair types
-                ss << this->data[i];
-            }
+            // if constexpr(is_specialization_of_pair<T>::value)
+            // {
+            //     ss << "(" << this->data[i].first << "," << this->data[i].second << ")";
+            // }
+            // else
+            // {
+            //     // Default for non-pair types
+            //     ss << this->data[i];
+            // }
          }
      }
      ss << "]";

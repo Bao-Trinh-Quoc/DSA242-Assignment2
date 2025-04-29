@@ -266,30 +266,32 @@ xMap<K, V>::~xMap()
 template <class K, class V>
 V xMap<K, V>::put(K key, V value)
 {
+    // Get index of the key
     int index = this->hashCode(key, capacity);
+
+    // Store value for return
     V retValue = value;
-    // TODO YOUR CODE IS HERE
-    //  Check if key already exists in the map
-    DLinkedList<Entry*>& bucket = table[index];
-    for (auto pEntry : bucket) {
-        if (keyEQ(pEntry->key, key)) {
-        retValue = pEntry->value;
-        pEntry->value = value;
-        return retValue;
+
+    // Check if key already exists
+    DLinkedList<Entry*>& list = table[index];
+    for(auto pEntry: list){
+        if(keyEQ(pEntry->key, key)){
+            retValue = pEntry->value;
+            pEntry->value = value;
+            // Return the old value
+            return retValue;
         }
     }
 
-    // Key doesn't exist, then add new entry
-    ensureLoadFactor(count + 1); // count or count + 1?
+    // Put the new key-value pair
+    Entry* pEntry = new Entry(key, value);
+    list.add(pEntry);
 
-    // Recalculate index in case of rehashing
-    index = this->hashCode(key, capacity);
+    // Increase count
+    count++;
 
-    Entry* newEntry = new Entry(key, value);
-    this->table[index].add(newEntry);
-    this->count++;
-
-
+    // Ensure load factor
+    ensureLoadFactor(count);
     return retValue;
 }
 
@@ -544,7 +546,6 @@ void xMap<K, V>::moveEntries(
         }
     }
 }
-
 /*
  * ensureLoadFactor:
  *  Purpose: ensure the load-factor,
@@ -632,30 +633,29 @@ void xMap<K, V>::removeInternalData()
  *          to the current table
  */
 
-template <class K, class V>
-void xMap<K, V>::copyMapFrom(const xMap<K, V> &map)
-{
-    removeInternalData();
-
-    this->capacity = map.capacity;
-    this->count = 0;
-    this->table = new DLinkedList<Entry *>[capacity];
-
-    this->hashCode = hashCode;
-    this->loadFactor = loadFactor;
-
-    this->valueEqual = valueEqual;
-    this->keyEqual = keyEqual;
-    // SHOULD NOT COPY: deleteKeys, deleteValues => delete ONLY TIME in map if needed
-
-    // copy entries
-    for (int idx = 0; idx < map.capacity; idx++)
-    {
-        DLinkedList<Entry *> &list = map.table[idx];
-        for (auto pEntry : list)
-        {
-            this->put(pEntry->key, pEntry->value);
-        }
-    }
-}
+ template <class K, class V>
+ void xMap<K, V>::copyMapFrom(const xMap<K, V>& map) {
+   // Copy member variables first
+   this->capacity = map.capacity;
+   this->count = 0;
+   this->loadFactor = map.loadFactor;
+   this->hashCode = map.hashCode;
+   this->keyEqual = map.keyEqual;
+   this->valueEqual = map.valueEqual;
+   // SHOULD NOT COPY: deleteKeys, deleteValues => delete ONLY TIME in map if needed
+   
+   // Initialize the hash table
+   this->table = new DLinkedList<Entry*>[this->capacity];
+   for (int i = 0; i < this->capacity; i++) {
+       this->table[i] = DLinkedList<Entry*>();
+   }
+ 
+   // Copy entries last - after all initialization is complete
+   for (int idx = 0; idx < map.capacity; idx++) {
+      DLinkedList<Entry*>& list = map.table[idx];
+      for (auto pEntry : list) {
+           this->put(pEntry->key, pEntry->value);
+      }
+   }
+ }
 #endif /* XMAP_H */

@@ -22,3 +22,15 @@ ok so this is pretty bs
 but i add inline to every function in Inventory
 
 Add inline vao mot dong function :)).
+
+to vua chu y source code ben TAVT lam cach khac. thu cai do xem sao.
+
+roi vay gio co 2 cach: hoac la uncomment cai o XArrayList
+hoac la them doan code o inventory_compressor <--- dang lam cach nay.
+
+29/04/2025
+bat dau tim cach test bot may bai Hash truoc.
+cha van de o Hash cung kha nhieu nhieu :))). sua tu tu duoc.vua sua vua lam bai cuoi luon.
+
+
+update copyMapFrom

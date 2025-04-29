@@ -12,6 +12,14 @@
 #include "heap/Heap.h"
 #include "list/XArrayList.h"
 
+
+namespace std {
+    inline ostream& operator<<(ostream& os, const pair<char, int>& p) {
+        os << "(" << p.first << ", " << p.second << ")";
+        return os;
+    }
+}
+
 template<int treeOrder>
 class HuffmanTree {
 public:
