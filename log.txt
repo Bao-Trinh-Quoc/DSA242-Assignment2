@@ -39,3 +39,7 @@ completed Hash --- passed 100 tcs
 
 update heapify in Heap. clear heap before push
 update heapSort in Heap.
+
+o cai phan test cua TA-VT heap to de heapsort thanh public. (code chinh thuc la private theo thay)
+ok da test xong heap. :))).
+chac la den gan cuoi phai doi chieu code mot phat nua thoi chu khong the de moi phien ban mot kieu duoc.

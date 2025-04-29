@@ -115,12 +115,12 @@ private:
         int originalSize = arrayList.size();
         // First remove all elements from arrayList
         while (!arrayList.empty()) {
-        arrayList.removeAt(0);
+            arrayList.removeAt(0);
         }
 
         // Then add back the sorted elements
         for (int i = 0; i < originalSize; i++) {
-        arrayList.add(pop());
+            arrayList.add(pop());
         }
     }
     
@@ -509,8 +509,26 @@ void Heap<T>::copyFrom(const Heap<T>& heap){
     this->deleteUserData = heap.deleteUserData;
     
     //Copy items from heap:
-    for(int idx=0; idx < heap.size(); idx++){
+    // for(int idx=0; idx < heap.size(); idx++){
+    //     this->elements[idx] = heap.elements[idx];
+    // }
+
+    // Copy items from heap:
+    for(int idx=0; idx < heap.count; idx++){
+        // original shallow copy
+        // this->elements[idx] = heap.elements[idx]; 
+
+        // deep copy
+        // this->elements[idx] = new int(*heap.elements[idx]);
+
+        // Check if we're dealing with Heap<int*> specifically
+        if constexpr (std::is_same<T, int*>::value) {
+        // Deep copy for int* to avoid double-free issues
+        this->elements[idx] = new int(*heap.elements[idx]);
+        } else {
+        // Simple copy for all other types
         this->elements[idx] = heap.elements[idx];
+        }
     }
 }
 
