@@ -43,3 +43,11 @@ update heapSort in Heap.
 o cai phan test cua TA-VT heap to de heapsort thanh public. (code chinh thuc la private theo thay)
 ok da test xong heap. :))).
 chac la den gan cuoi phai doi chieu code mot phat nua thoi chu khong the de moi phien ban mot kieu duoc.
+
+
+30/04
+
+change the format of toString in InvetoryAttribute (refer to the code in pi5) --- not changed yet.
+ok i got the code of inventoryCompressor but not integrated yet.
+
+ok compile successfully not tested yet tho.

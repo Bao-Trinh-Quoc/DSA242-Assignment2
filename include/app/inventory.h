@@ -86,7 +86,11 @@ struct InventoryAttribute
     InventoryAttribute(const string &name, double value) : name(name), value(value) {}
     
     // Add toString method
-    string toString() const { return name + ": " + to_string(value); }
+    string toString() const { 
+        stringstream ss;
+        ss << name << ": " << fixed << setprecision(6) << value;
+        return ss.str();
+    }
     
     // Define the equality operator
     bool operator==(const InventoryAttribute& other) const {
@@ -95,7 +99,7 @@ struct InventoryAttribute
 
     // Define the output operator
     friend std::ostream& operator<<(std::ostream& os, const InventoryAttribute& attr) {
-        os << attr.name << ": " << attr.value;
+        os << attr.name << ": " << fixed << setprecision(6) << attr.value;
         return os;
     }
 };

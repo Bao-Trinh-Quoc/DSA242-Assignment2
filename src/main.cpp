@@ -24,13 +24,13 @@ void (*func_ptr[17])() = {
     heapDemo1,
     heapDemo2,
     heapDemo3,
-    // tc_huffman1001,
-    // tc_huffman1002,
-    // tc_huffman1003,
-    // tc_huffman1004,
-    // tc_huffman1005,
-    // tc_compressor1001,
-    // tc_compressor1002
+    tc_huffman1001,
+    tc_huffman1002,
+    tc_huffman1003,
+    tc_huffman1004,
+    tc_huffman1005,
+    tc_compressor1001,
+    tc_compressor1002
 };
 
 // void (*func_ptr[15])() = {
@@ -60,8 +60,8 @@ int main(int argc, char **argv)
 {
     // cout << "Assignment-2" << endl;
     if (argc == 1) {
-        // hashDemo1();
-        for (int i = 0; i < 10; i++) {
+        // hashDemo1(); 
+        for (int i = 0; i < 17; i++) {
             cout << "==========Running test case=======: " << i + 1 << endl;
             run(i);
         }
