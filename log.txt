@@ -51,3 +51,9 @@ change the format of toString in InvetoryAttribute (refer to the code in pi5) --
 ok i got the code of inventoryCompressor but not integrated yet.
 
 ok compile successfully not tested yet tho.
+
+
+note to myself: need to refactor and modify comment later (tommorrow maybe)
+
+update the case when there is just 1 node in huffman (but still got some problems tho) --- holy f the build func is so hard
+holy finally got it.

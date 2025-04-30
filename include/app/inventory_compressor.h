@@ -94,11 +94,36 @@ void HuffmanTree<treeOrder>::build(XArrayList<pair<char, int>>& symbolsFreqs)
     deleteTree(root);
     root = nullptr;
 
+    // handle case when there is just one node for n-ary huffman
     if (symbolsFreqs.size() == 1) {
-        HuffmanNode* leaf = new HuffmanNode(symbolsFreqs.get(0).first, symbolsFreqs.get(0).second, 0);
+        char symbol = symbolsFreqs.get(0).first;
+        int freq = symbolsFreqs.get(0).second;
+         
+
+        // For n-ary tree (n > 2) with a single character
         XArrayList<HuffmanNode*> children;
+        
+        // No need to add dummy nodes if the frequency is 0
+        if (freq == 0) {
+            HuffmanNode* leaf = new HuffmanNode(symbol, freq, 0);
+            children.add(leaf);
+            root = new HuffmanNode(freq, children);
+            return;
+        }
+
+        // For non-zero frequency in n-ary trees (n > 2)
+        // Add treeOrder-1 dummy nodes with frequency 0
+        for (int i = 0; i < treeOrder-1; i++) {
+            HuffmanNode* dummy = new HuffmanNode('\0', 0, i);
+            children.add(dummy);
+        }
+       
+        // Add the actual character node last
+        HuffmanNode* leaf = new HuffmanNode(symbol, freq, treeOrder-1);
         children.add(leaf);
-        root = new HuffmanNode(symbolsFreqs.get(0).second, children);
+       
+        // Create the root node with all children
+        root = new HuffmanNode(freq, children);
         return;
     }
 
@@ -238,7 +263,7 @@ void HuffmanTree<treeOrder>::generateCodesHelper(HuffmanNode* node, const string
     }
     
     // If this is a leaf node (no children), it has a symbol to encode
-    if (node->children.size() == 0) {
+    if (node->children.size() == 0 && node->symbol != '\0') {
         table.put(node->symbol, prefix);
         return;
     }
