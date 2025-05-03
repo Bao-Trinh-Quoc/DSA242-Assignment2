@@ -13,13 +13,19 @@
 #include "list/XArrayList.h"
 
 
-namespace std {
-    inline ostream& operator<<(ostream& os, const pair<char, int>& p) {
-        os << "(" << p.first << ", " << p.second << ")";
-        return os;
-    }
-}
+// should remove this when I submit the final (this just for testing on my local machine)
+// bcs in XarrayList.h of my instructor already have this function
+// namespace std {
+//     inline ostream& operator<<(ostream& os, const pair<char, int>& p) {
+//         os << "(" << p.first << ", " << p.second << ")";
+//         return os;
+//     }
+// }
 
+inline ostream& operator<<(ostream& os, const pair<char, int>& p) {
+    os << "(" << p.first << ", " << p.second << ")";
+    return os;
+}
 
 template<int treeOrder>
 class HuffmanTree {

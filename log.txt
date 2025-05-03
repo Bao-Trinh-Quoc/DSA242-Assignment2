@@ -57,3 +57,28 @@ note to myself: need to refactor and modify comment later (tommorrow maybe)
 
 update the case when there is just 1 node in huffman (but still got some problems tho) --- holy f the build func is so hard
 holy finally got it.
+
+note to myself: need to refactor and modify comment later (tommorrow maybe)
+note to myself: maybe delete inline when submit <--- no need
+
+
+3/5
+
+ok nay moi duoc extend deadline va co nhieu thu can phai lam phet ne.
+dau tien cu nop cai choi choi da chu minh cung dau co mat gi dau.
+
+roi nop cai hash map dau tien ma no bi permission denied la phai sua cai do truoc roi moi sua loi logic sau.
+
+ok nop lan dau duoc 70/100
+nho remove cai dong trong inventory_compressor la ok.
+
+* fix bug in heap and inventory_compressor
+    * heapDemo1, heapDemo2
+    * tc_huffman1004
+    * tc_compressor1001
+    * tc_compressor1002 
+* review and refactor code
+
+NHO DE LAI CAI heapsort thanh private khi nop code cho lms
+
+CHANGE: modify heapsort to follow my instructor description

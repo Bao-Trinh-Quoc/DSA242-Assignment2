@@ -100,27 +100,21 @@ private:
     void copyFrom(const Heap<T>& heap);
 
     void heapsort(XArrayList<T>& arrayList) {
-         // Clear the current heap if it has any data
         clear();
-            
-        // Step 1: Build a heap with all elements from arrayList
-        // Note: push() already contains reheapUp operation
+
+        // Build a heap from the array
         for (int i = 0; i < arrayList.size(); i++) {
             push(arrayList.get(i));
-            // Print the state of the heap after each completed heap-up
-            cout << toString() << endl;
-        }
-        
-        // Step 2: Extract all elements from the heap (sorted order)
-        int originalSize = arrayList.size();
-        // First remove all elements from arrayList
-        while (!arrayList.empty()) {
-            arrayList.removeAt(0);
         }
 
-        // Then add back the sorted elements
+        // Pop elements from the heap to get them in sorted order
+        int originalSize = arrayList.size();
+        arrayList.clear();
+
         for (int i = 0; i < originalSize; i++) {
-            arrayList.add(pop());
+            T item = pop();
+            arrayList.add(item);
+            arrayList.println();
         }
     }
     
