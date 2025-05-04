@@ -98,7 +98,6 @@ private:
     
     void removeInternalData();
     void copyFrom(const Heap<T>& heap);
-
     void heapsort(XArrayList<T>& arrayList) {
         clear();
 
@@ -287,7 +286,20 @@ void Heap<T>::remove(T item, void (*removeItemData)(T)){
     // move last element to the position of the item to be removed
     this->elements[pos] = this->elements[this->count - 1];
     this->count--;
-    reheapDown(pos);
+
+    // Check if we need to reheap up or down
+    if (pos > 0) {
+        int parent = (pos - 1) / 2;
+        if (aLTb(this->elements[pos], this->elements[parent])) {
+            reheapUp(pos);  // new element is smaller than parent
+        } else {
+            reheapDown(pos); // new element is larger than parent
+        }
+    }
+    else {
+        // If we are at the root, we need to reheap down
+        reheapDown(pos);
+    }
 }
 
 /*
@@ -348,8 +360,15 @@ template<class T>
 void Heap<T>::heapify(T array[], int size){
     clear();
 
-    for(int idx=0; idx < size; idx++) 
-        push(array[idx]);
+    ensureCapacity(size);
+    for (int i = 0; i < size; i++) {
+        elements[i] = array[i];
+    }
+    this->count = size;
+
+    for (int i = (size / 2) - 1; i >= 0; i--) {
+        reheapDown(i);
+    }
 }
 
 template<class T>

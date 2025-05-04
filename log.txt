@@ -82,3 +82,8 @@ nho remove cai dong trong inventory_compressor la ok.
 NHO DE LAI CAI heapsort thanh private khi nop code cho lms
 
 CHANGE: modify heapsort to follow my instructor description
+
+4/5 
+roi gio sua cai heap cho hoan chinh cai da nha
+dau tien la cai ham remove.
+ok fix heapify and remove.
