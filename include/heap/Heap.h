@@ -415,7 +415,9 @@ void Heap<T>::ensureCapacity(int minCapacity){
     if(minCapacity >= capacity){
         //re-allocate 
         int old_capacity = capacity;
-        capacity = old_capacity + (old_capacity >> 2);
+        // make sure the capacity is at least minCapacity
+        // capacity = old_capacity + (old_capacity >> 2);
+        capacity = max(minCapacity, old_capacity + (old_capacity >> 2));
         try{
             T* new_data = new T[capacity];
             //OLD: memcpy(new_data, elements, capacity*sizeof(T));

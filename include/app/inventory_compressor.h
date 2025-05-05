@@ -206,10 +206,10 @@ template <int treeOrder>
 std::string HuffmanTree<treeOrder>::decode(const std::string &huffmanCode)
 {
     if (root == nullptr || huffmanCode.empty()) {
-        return "";
+        return std::string(1, '\0');
     }
     
-    std::string result;
+    std::string result = "";
     HuffmanNode* currentNode = root;
     
     for (char c : huffmanCode) {
@@ -221,11 +221,11 @@ std::string HuffmanTree<treeOrder>::decode(const std::string &huffmanCode)
         } else if (c >= 'A' && c <= 'F') {
             childIndex = 10 + (c - 'A');
         } else {
-            return "";  // Invalid character
+            return std::string(1, '\0');  // Invalid character
         }
         
         if (childIndex < 0 || childIndex >= currentNode->children.size()) {
-            return "";  // Invalid index
+            return std::string(1, '\0');  // Invalid index
         }
         
         currentNode = currentNode->children.get(childIndex);
@@ -236,14 +236,15 @@ std::string HuffmanTree<treeOrder>::decode(const std::string &huffmanCode)
                 result += currentNode->symbol;
             }
             currentNode = root;
-        }
+        } 
     }
     
-    // If we didn't end at root, the code was invalid
-    if (currentNode != root) {
-        return "";
+    // If we didn't end at root this means the code is invalid
+    if (currentNode != root || result.empty()) {
+        return std::string(1, '\0');
     }
-    
+
+
     return result;
 }
 
@@ -269,7 +270,7 @@ void HuffmanTree<treeOrder>::generateCodesHelper(HuffmanNode* node, const string
     }
     
     // If this is a leaf node (no children), it has a symbol to encode
-    if (node->children.size() == 0 && node->symbol != '\0') {
+    if (node->children.size() == 0) {
         table.put(node->symbol, prefix);
         return;
     }
@@ -342,7 +343,28 @@ void InventoryCompressor<treeOrder>::buildHuffman()
     // Convert to list of pairs for Huffman tree
     XArrayList<std::pair<char, int>> symbolFreqs;
     DLinkedList<char> keys = freqMap.keys();
+   // Create a sorted array of characters
+    XArrayList<char> sortedChars;
     for (char c : keys) {
+        sortedChars.add(c);
+    }
+
+    // Sort characters by ASCII value
+    for (int i = 0; i < sortedChars.size() - 1; i++) {
+        for (int j = 0; j < sortedChars.size() - i - 1; j++) {
+            if (sortedChars.get(j) > sortedChars.get(j + 1)) {
+                char temp = sortedChars.get(j);
+                sortedChars.removeAt(j);
+                sortedChars.add(j, sortedChars.get(j));
+                sortedChars.removeAt(j + 1);
+                sortedChars.add(j + 1, temp);
+            }
+        }
+    }
+
+    // Add pairs to symbolFreqs in ASCII order
+    for (int i = 0; i < sortedChars.size(); i++) {
+        char c = sortedChars.get(i);
         symbolFreqs.add(std::make_pair(c, freqMap.get(c)));
     }
     
@@ -370,7 +392,7 @@ std::string InventoryCompressor<treeOrder>::productToString(const List1D<Invento
         if (i > 0) 
             ss << ", ";
 
-        ss << "(" << attributes.get(i).name << ":" << std::fixed << std::setprecision(6)
+        ss << "(" << attributes.get(i).name << ": " << std::fixed << std::setprecision(6)
            << attributes.get(i).value << ")";
     }
 
@@ -396,6 +418,8 @@ template <int treeOrder>
 std::string InventoryCompressor<treeOrder>::decodeHuffman(const std::string &huffmanCode, List1D<InventoryAttribute> &attributesOutput, std::string &nameOutput)
 {
     //TODO
+    attributesOutput = List1D<InventoryAttribute>();
+    nameOutput = "";
     // Decode the Huffman code
     std::string decoded = tree->decode(huffmanCode);
     if (decoded.empty()) return "";

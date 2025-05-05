@@ -74,10 +74,10 @@ void tc_huffman1004() {
     XArrayList<pair<char, int>> symbolFreqs;
     symbolFreqs.add(make_pair('M', 3));
     symbolFreqs.add(make_pair('N', 5));
-    
+
     HTree tree;
     tree.build(symbolFreqs);
-    
+
     xMap<char, string> codeTable(&charHashFunc);
     tree.generateCodes(codeTable);
 
@@ -112,33 +112,45 @@ void tc_compressor1001() {
     attrs.add(InventoryAttribute("weight", 2.5));
     attrs.add(InventoryAttribute("voltage", 12.0));
     manager.addProduct(attrs, "Gadget", 50);
-    
+
     InvCompressor compressor(&manager);
     compressor.buildHuffman();
-    
+
+    string productStr = compressor.productToString(attrs, "Gadget");
+    cout << "Product string: " << productStr << endl;
+
+    compressor.printHuffmanTable();
+
     string encoded = compressor.encodeHuffman(attrs, "Gadget");
     cout << "Encoded product: " << encoded << endl;
 }
 
 void tc_compressor1002() {    
     InventoryManager manager;
-    
+
     List1D<InventoryAttribute> carAttrs;
     carAttrs.add(InventoryAttribute("speed", 88.0));
     manager.addProduct(carAttrs, "Car", 1);
-    
+
     List1D<InventoryAttribute> batteryAttrs;
     batteryAttrs.add(InventoryAttribute("capacity", 250.0));
     batteryAttrs.add(InventoryAttribute("voltage", 12.0));
     manager.addProduct(batteryAttrs, "Battery", 5);
-    
+
     InvCompressor compressor(&manager);
+
+    string carStr = compressor.productToString(carAttrs, "Car");
+    string batteryStr = compressor.productToString(batteryAttrs, "Battery");
+
+    cout << "Car string: " << carStr << endl;
+    cout << "Battery string: " << batteryStr << endl;
+
     compressor.buildHuffman();
-    compressor.printHuffmanTable(); 
-    
+    compressor.printHuffmanTable();
+
     string encodedCar = compressor.encodeHuffman(carAttrs, "Car");
     string encodedBattery = compressor.encodeHuffman(batteryAttrs, "Battery");
-    
+
     cout << "Encoded Car: " << encodedCar << endl;
     cout << "Encoded Battery: " << encodedBattery << endl;
 }
