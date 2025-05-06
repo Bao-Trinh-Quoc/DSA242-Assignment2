@@ -145,3 +145,6 @@ update decodeHuffman to return appropriate value when the input is empty or inva
 6/5/2025
 to se refactor lai code hom nay luon roi sua gi thi sua them. Cai testcase cua TAVT thi se sua tu tu chill.
 ok phai chuyen cai heapsort sang public :))).
+
+ok gio de fix lai cai heapsort truoc de pass not cai testcase da
+ok sua xong cai heapsort cho dung yeu cau. 

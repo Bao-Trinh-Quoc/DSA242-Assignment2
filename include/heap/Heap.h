@@ -98,23 +98,40 @@ private:
     
     void removeInternalData();
     void copyFrom(const Heap<T>& heap);
+public:
     void heapsort(XArrayList<T>& arrayList) {
+        // Clear the heap first
         clear();
+        
+        T* tempArray = new T[arrayList.size()];
+        int originalSize = arrayList.size();
 
-        // Build a heap from the array
         for (int i = 0; i < arrayList.size(); i++) {
             push(arrayList.get(i));
         }
-
-        // Pop elements from the heap to get them in sorted order
-        int originalSize = arrayList.size();
-        arrayList.clear();
-
-        for (int i = 0; i < originalSize; i++) {
-            T item = pop();
-            arrayList.add(item);
-            arrayList.println();
+        // Pop elements one by one and store them in tempArray
+        for (int i = 0; i < arrayList.size(); i++) {
+            tempArray[i] = pop();
+            
+            XArrayList<T> currentState;
+            // Add sorted elements (from tempArray)
+            for (int j = 0; j <= i; j++) {
+                currentState.add(tempArray[j]);
+            }
+            // Add remaining unsorted elements (from original arrayList)
+            for (int j = i+1; j < arrayList.size(); j++) {
+                currentState.add(arrayList.get(j));
+            }
+            
+            currentState.println();
         }
+        
+        arrayList.clear();
+        for (int i = 0; i < originalSize; i++) {
+            arrayList.add(tempArray[i]);
+        }
+        
+        delete[] tempArray;
     }
     
 //////////////////////////////////////////////////////////////////////

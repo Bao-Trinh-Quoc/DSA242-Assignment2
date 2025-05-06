@@ -13,7 +13,7 @@
 
 using namespace std;
 
-void (*func_ptr[17])() = {
+void (*func_ptr[])() = {
     hashDemo1,
     hashDemo2,
     hashDemo3,
@@ -24,6 +24,7 @@ void (*func_ptr[17])() = {
     heapDemo1,
     heapDemo2,
     heapDemo3,
+    heapDemo4,
     tc_huffman1001,
     tc_huffman1002,
     tc_huffman1003,
@@ -45,6 +46,7 @@ const char* test_names[] = {
     "heapDemo1",
     "heapDemo2", 
     "heapDemo3",
+    "heapDemo4",
     "tc_huffman1001",
     "tc_huffman1002",
     "tc_huffman1003", 
@@ -82,7 +84,7 @@ int main(int argc, char **argv)
     // cout << "Assignment-2" << endl;
     if (argc == 1) {
         // hashDemo1(); 
-        for (int i = 0; i < 17; i++) {
+        for (int i = 0; i < 18; i++) {
             cout << "==========Running test case=======: " << i + 1 << endl;
             cout << "Test case name: " << test_names[i] << endl;
             cout << "===================================" << endl;
