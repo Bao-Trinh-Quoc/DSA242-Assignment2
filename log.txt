@@ -134,4 +134,14 @@ in decode:
 hmm maybe this is not necessary.
 
 in generateCodesHelper, add dummynodes to the hash tables
+
+5/5/2025
 ok pass all test cases on bkel but probably need to refactor and clean up the code.
+
+REMEMBER: heapsort is private and need to determined whether to use XArrayList.
+
+update decodeHuffman to return appropriate value when the input is empty or invalid format
+
+6/5/2025
+to se refactor lai code hom nay luon roi sua gi thi sua them. Cai testcase cua TAVT thi se sua tu tu chill.
+ok phai chuyen cai heapsort sang public :))).

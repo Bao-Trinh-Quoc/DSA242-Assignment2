@@ -22,10 +22,10 @@
 //     }
 // }
 
-inline ostream& operator<<(ostream& os, const pair<char, int>& p) {
-    os << "(" << p.first << ", " << p.second << ")";
-    return os;
-}
+// inline ostream& operator<<(ostream& os, const pair<char, int>& p) {
+//     os << "(" << p.first << ", " << p.second << ")";
+//     return os;
+// }
 
 template<int treeOrder>
 class HuffmanTree {
@@ -242,6 +242,7 @@ std::string HuffmanTree<treeOrder>::decode(const std::string &huffmanCode)
     // If we didn't end at root this means the code is invalid
     if (currentNode != root || result.empty()) {
         return std::string(1, '\0');
+        // return "\\x00";
     }
 
 
@@ -422,11 +423,15 @@ std::string InventoryCompressor<treeOrder>::decodeHuffman(const std::string &huf
     nameOutput = "";
     // Decode the Huffman code
     std::string decoded = tree->decode(huffmanCode);
-    if (decoded.empty()) return "";
+    if (decoded == std::string(1, '\0')) {
+        return std::string(1, '\0');  // Return null character if decode failed
+    }
     
     // Parse the decoded string
     size_t colonPos = decoded.find(':');
-    if (colonPos == std::string::npos) return decoded;
+    if (colonPos == std::string::npos) {
+        return std::string(1, '\0');  // Invalid format
+    }
     
     // Extract name
     nameOutput = decoded.substr(0, colonPos);
