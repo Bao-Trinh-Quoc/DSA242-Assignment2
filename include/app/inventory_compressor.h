@@ -128,7 +128,6 @@ void HuffmanTree<treeOrder>::build(XArrayList<pair<char, int>>& symbolsFreqs)
         HuffmanNode* leaf = new HuffmanNode(symbol, freq, treeOrder-1);
         children.add(leaf);
        
-        // Create the root node with all children
         root = new HuffmanNode(freq, children);
         return;
     }
@@ -144,20 +143,20 @@ void HuffmanTree<treeOrder>::build(XArrayList<pair<char, int>>& symbolsFreqs)
         }
         
         // For equal frequencies:
-        // 1. Both dummy nodes - maintain insertion order
+        // Both dummy nodes - maintain insertion order
         if (a->symbol == '\0' && b->symbol == '\0') {
             return (a->insertOrder < b->insertOrder) ? -1 : 1;
         }
-        // 2. Dummy nodes have lowest priority
+        // Dummy nodes have lowest priority
         if (a->symbol == '\0') return 1;
         if (b->symbol == '\0') return -1;
-        // 3. For real nodes with equal frequencies, earlier insertion has higher priority
+        // earlier insertion has higher priority
         return (a->insertOrder < b->insertOrder) ? -1 : 1;
     };
     
     Heap<HuffmanNode*> minHeap(compareNodes);
     
-    // First add regular nodes in original order
+    // add regular nodes in original order
     for (int i = 0; i < symbolsFreqs.size(); i++) {
         HuffmanNode* node = new HuffmanNode(symbolsFreqs.get(i).first, symbolsFreqs.get(i).second, insertionCounter++);
         minHeap.push(node);

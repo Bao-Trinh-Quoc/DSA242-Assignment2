@@ -153,3 +153,7 @@ nay met met nen chac de mai review source code
 8/5/2025
 ok today let's refactor and review code.
 ok done phan xmap.
+
+9/5/2025
+ok done heap
+ok done inventory
